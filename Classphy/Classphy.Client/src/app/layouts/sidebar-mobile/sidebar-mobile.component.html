@@ -1,0 +1,43 @@
+<div>
+  <p-button
+    severity="secondary"
+    size="large"
+    icon="pi pi-bars"
+    variant="text"
+    class="p-1 text-color-secondary"
+    (onClick)="sidebarVisible = true"
+  ></p-button>
+
+  <p-sidebar
+    [(visible)]="sidebarVisible"
+    [modal]="true"
+    styleClass="m-2 border-round-2xl"
+  >
+    <div
+      class="flex w-full md:w-60 h-full bg-transparent border-none flex-column"
+    >
+      <span class="flex align-items-center gap-3 p-3 w-full">
+        <a
+          routerLink="/"
+          class="flex align-items-center gap-3 w-full"
+          style="text-decoration: none; color: inherit"
+        >
+          <div style="width: 2.5rem; height: 2.5rem; object-fit: contain"></div>
+          <span class="text-lg font-semibold w-fit"
+            >Conciliación de Nóminas</span
+          >
+        </a>
+      </span>
+      <p-divider></p-divider>
+
+      <p-menu
+        [model]="sidebarItems"
+        styleClass="flex w-full md:w-60 h-full bg-transparent border-none flex-column"
+      >
+      <ng-template pTemplate="start">
+        
+    </ng-template>
+      </p-menu>
+    </div>
+  </p-sidebar>
+</div>
