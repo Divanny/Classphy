@@ -1,0 +1,23 @@
+<header class="flex align-items-center justify-content-between px-4 lg:hidden py-2">
+  <app-sidebar-mobile></app-sidebar-mobile>
+  <div class="flex-grow-1">
+    <div class="flex flex-1 justify-content-end align-items-center gap-4">
+      <div class="relative">
+        <p-button [text]="true" severity="secondary" class="flex justify-content-between" (onClick)="profileMenu.toggle($event)">
+          <div class="flex align-items-center gap-1">
+            <p-avatar icon="pi pi-user" class="mr-2" size="normal"></p-avatar>
+            <span *ngIf="user" class="flex flex-column text-left justify-content-start align-content-center">
+              <span class="font-medium text-sm">{{ getFirstLastName(user.nombres, user.apellidos) }}</span>
+              <span class="font-light text-xs">Administrador</span>
+            </span>
+            <span *ngIf="!user" class="flex flex-column text-left justify-content-start align-content-center">
+              <p-skeleton width="6rem" height="17px" class="mb-1"></p-skeleton>
+              <p-skeleton width="6rem" height="13px"></p-skeleton>
+            </span>
+          </div>
+        </p-button>
+      </div>
+    </div>
+  </div>
+  <p-menu #profileMenu [model]="profileMenuItems" popup="true"></p-menu>
+</header>

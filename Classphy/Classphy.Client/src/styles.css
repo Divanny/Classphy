@@ -1,0 +1,82 @@
+@import "primeng/resources/themes/aura-dark-purple/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+html {
+  height: 100%;
+  font-size: 13.5px;
+}
+
+body {
+  color: var(--p-text-color);
+  background-color: var(--ground-background);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.navbar {
+  padding: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  background: var(--card-background);
+  border: var(--card-border);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.card-background {
+  background: var(--card-background);
+}
+
+:root[class~="p-light"] {
+  --mobile-menu-background: #fff;
+  --card-border: 1px solid #e2e8f0;
+  --card-background: #fff;
+  --border-color: #e2e8f0;
+  --ground-background: #f1f5f9;
+  --overlay-background: #fff;
+  --hover-background: #f1f5f9;
+}
+
+:root {
+  --mobile-menu-background: rgba(0, 0, 0, 0.3);
+  --card-border: 1px solid #3f3f46;
+  --card-background: #18181b;
+  --border-color: #3f3f46;
+  --ground-background: #09090b;
+  --overlay-background: #18181b;
+  --hover-background: #27272a;
+}
+
+.p-menu-list {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+@media (min-width: 992px) {
+  .pl-20 {
+    padding-left: 20rem;
+  }
+}

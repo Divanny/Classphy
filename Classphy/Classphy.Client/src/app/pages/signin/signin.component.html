@@ -1,0 +1,38 @@
+<div class="login-container flex-column">
+  <img
+    src="../../assets/classphy.png"
+    alt="Image"
+    height="40"
+    class="my-4"
+  />
+  <p-card class="login-card w-full md:w-30rem">
+    <div class="text-center text-900 text-2xl font-medium  mb-3">Iniciar sesión</div>
+
+    <div>
+      <label for="email" class="block text-900 font-medium mb-2">Correo</label>
+      <input
+        pInputText
+        id="email"
+        placeholder="Correo electrónico"
+        aria-describedby="email-help"
+        [(ngModel)]="mail"
+        class="w-full mb-3"
+      />
+
+      <label for="password" class="block text-900 font-medium mb-2"
+        >Password</label
+      >
+      <p-password
+        id="password"
+        [(ngModel)]="password"
+        [toggleMask]="true"
+        styleClass="w-full mb-3"
+        inputStyleClass="w-full"
+        placeholder="Contraseña"
+        [feedback]="false"
+      />
+
+      <button pButton pRipple label="Iniciar sesión" class="w-full"></button>
+    </div>
+  </p-card>
+</div>

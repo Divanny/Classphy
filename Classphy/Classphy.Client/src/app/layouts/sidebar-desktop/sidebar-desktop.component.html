@@ -1,0 +1,71 @@
+<div class="left-0 w-20rem h-full hidden fixed lg:block">
+  <p-menu
+    [model]="sidebarItems"
+    styleClass="flex w-full h-full md:w-60 bg-transparent border-none flex-column"
+
+  >
+    <ng-template pTemplate="start">
+      <a
+        routerLink="/"
+        class="flex align-items-center gap-3 p-3 w-full"
+        style="text-decoration: none; color: inherit"
+      >
+        <img
+          alt="original logo"
+          src="../../assets/classphy.png"
+          style="width: auto; height: 25px; margin-top: 5px"
+        />
+      </a>
+      <hr class="mb-3 border-top-1 border-none surface-border" />
+    </ng-template>
+    <ng-template pTemplate="submenuheader" let-item>
+      <span class="text-primary font-bold">{{ item.label }}</span>
+    </ng-template>
+    <ng-template pTemplate="item" let-item>
+      <a pRipple class="flex align-items-center p-menuitem-link mb-1">
+        <span [class]="item.icon"></span>
+        <span class="ml-2">{{ item.label }}</span>
+        <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+        <span
+          *ngIf="item.shortcut"
+          class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
+        >
+          {{ item.shortcut }}
+        </span>
+      </a>
+    </ng-template>
+    <ng-template pTemplate="end" let-item>
+      <hr class="mb-1 border-top-1 border-none surface-border" />
+      <div class="p-3 pt-2">
+        <p-button
+          severity="contrast"
+          [text]="true"
+          styleClass="w-full flex justify-content-between"
+          (onClick)="profileMenu.toggle($event)"
+        >
+          <div class="flex align-items-center gap-1">
+            <p-avatar icon="pi pi-user" class="mr-2" size="large"></p-avatar>
+            <span
+              *ngIf="user"
+              class="flex flex-column text-left justify-content-start align-content-center"
+            >
+              <span class="font-medium">{{
+                getFirstLastName(user.nombres, user.apellidos)
+              }}</span>
+              <span class="font-light text-sm">Administrador</span>
+            </span>
+            <span
+              *ngIf="!user"
+              class="flex flex-column text-left justify-content-start align-content-center"
+            >
+              <p-skeleton width="9rem" height="20px" class="mb-1"></p-skeleton>
+              <p-skeleton width="6rem" height="15px"></p-skeleton>
+            </span>
+          </div>
+          <i class="pi pi-chevron-up text-xs"></i>
+        </p-button>
+      </div>
+    </ng-template>
+  </p-menu>
+  <p-menu #profileMenu [model]="profileMenuItems" popup="true"></p-menu>
+</div>
