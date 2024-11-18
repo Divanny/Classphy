@@ -1,9 +1,8 @@
 <div>
   <p-button
     severity="secondary"
-    size="large"
     icon="pi pi-bars"
-    variant="text"
+    [text]="true"
     class="p-1 text-color-secondary"
     (onClick)="sidebarVisible = true"
   ></p-button>
@@ -11,32 +10,43 @@
   <p-sidebar
     [(visible)]="sidebarVisible"
     [modal]="true"
-    styleClass="m-2 border-round-2xl"
+    styleClass="border-round-2xl"
   >
-    <div
-      class="flex w-full md:w-60 h-full bg-transparent border-none flex-column"
-    >
-      <span class="flex align-items-center gap-3 p-3 w-full">
-        <a
-          routerLink="/"
-          class="flex align-items-center gap-3 w-full"
-          style="text-decoration: none; color: inherit"
-        >
-          <div style="width: 2.5rem; height: 2.5rem; object-fit: contain"></div>
-          <span class="text-lg font-semibold w-fit"
-            >Conciliación de Nóminas</span
-          >
-        </a>
-      </span>
-      <p-divider></p-divider>
-
+    <ng-template pTemplate="header">
+      <a
+        routerLink="/"
+        class="flex align-items-center gap-3 w-full"
+        style="text-decoration: none; color: inherit"
+      >
+        <img
+          alt="original logo"
+          src="../../assets/classphy.png"
+          style="width: auto; height: 25px"
+        />
+      </a>
+    </ng-template>
+    <hr class="mb-3 border-top-1 border-none surface-border" />
+    <div>
       <p-menu
         [model]="sidebarItems"
-        styleClass="flex w-full md:w-60 h-full bg-transparent border-none flex-column"
+        styleClass="flex w-full md:w-60 bg-transparent border-none flex-column"
       >
-      <ng-template pTemplate="start">
-        
-    </ng-template>
+        <ng-template pTemplate="submenuheader" let-item>
+          <span class="text-primary font-bold" >{{ item.label }}</span>
+        </ng-template>
+        <ng-template pTemplate="item" let-item>
+          <a pRipple class="flex align-items-center p-menuitem-link  mb-1">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+            <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+            <span
+              *ngIf="item.shortcut"
+              class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
+            >
+              {{ item.shortcut }}
+            </span>
+          </a>
+        </ng-template>
       </p-menu>
     </div>
   </p-sidebar>

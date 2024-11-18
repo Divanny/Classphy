@@ -8,5 +8,7 @@ import { ImportsModule } from '../../imports';
   imports: [ImportsModule]
 })
 export class SignInComponent {
+  mail!: string;
+  password!: string;
 
 }

@@ -6,11 +6,8 @@ import { MenuItem } from 'primeng/api';
   selector: 'app-sidebar-mobile',
   templateUrl: './sidebar-mobile.component.html',
   standalone: true,
-  imports: [
-    ImportsModule
-  ]
+  imports: [ImportsModule],
 })
-
 export class SideBarMobileComponent implements OnInit {
   sidebarVisible: boolean = false;
   isDarkMode: boolean = true;
@@ -23,33 +20,23 @@ export class SideBarMobileComponent implements OnInit {
   getStaticSidebarItems(): MenuItem[] {
     return [
       {
-        label: "Inicio",
-        icon: "pi pi-home",
-        routerLink: "/"
+        label: 'Inicio',
+        icon: 'pi pi-home',
+        routerLink: '/',
       },
       {
-        label: "Procesos Nómina",
-        items: [
-          { label: "Precarga", icon: "pi pi-upload", routerLink: "/Precarga" },
-          { label: "Carga", icon: "pi pi-folder", routerLink: "/Carga" },
-          { label: "Variación", icon: "pi pi-sort-alt", routerLink: "/Variacion" },
-          { label: "Exclusiones", icon: "pi pi-ban", routerLink: "/Exclusiones" }
-        ]
+        label: 'Calificaciones',
+        icon: 'pi pi-search',
+        routerLink: '/Consultas',
       },
+      { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/Reportes' },
+      { label: 'Usuarios', icon: 'pi pi-user', routerLink: '/users' },
+      { label: 'Materias', icon: 'pi pi-book', routerLink: '/subjects' },
       {
-        label: "Consultas",
-        items: [
-          { label: "Consultas", icon: "pi pi-search", routerLink: "/Consultas" },
-          { label: "Reportes", icon: "pi pi-chart-bar", routerLink: "/Reportes" },
-          { label: "Reimpresión", icon: "pi pi-print", routerLink: "/Reimpresion" }
-        ]
+        label: 'Estudiantes',
+        icon: 'pi pi-graduation-cap',
+        routerLink: '/students',
       },
-      {
-        label: "Otros",
-        items: [
-          { label: "Configuración", icon: "pi pi-cog", routerLink: "/Configuracion" }
-        ]
-      }
     ];
   }
 }
