@@ -1,38 +1,65 @@
 <div class="login-container flex-column">
-  <img
-    src="../../assets/classphy.png"
-    alt="Image"
-    height="40"
-    class="my-4"
-  />
+  <img src="../../assets/classphy.png" alt="Image" height="40" class="my-4" />
   <p-card class="login-card w-full md:w-30rem">
-    <div class="text-center text-900 text-2xl font-medium  mb-3">Iniciar sesión</div>
+    <div class="text-center text-900 text-2xl font-medium mb-3">
+      Iniciar sesión
+    </div>
 
     <div>
-      <label for="email" class="block text-900 font-medium mb-2">Correo</label>
-      <input
-        pInputText
-        id="email"
-        placeholder="Correo electrónico"
-        aria-describedby="email-help"
-        [(ngModel)]="mail"
-        class="w-full mb-3"
-      />
+      <form [formGroup]="signInForm" (ngSubmit)="signIn($event)">
+        <div class="flex flex-column gap-3">
+          <div>
+            <label for="username" class="block text-900 font-medium mb-2"
+              >Usuario o correo electrónico</label
+            >
+            <input
+              pInputText
+              id="username"
+              placeholder="Nombre de usuario o correo electrónico"
+              aria-describedby="email-help"
+              formControlName="username"
+              class="w-full"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  signInForm.controls['username'].invalid &&
+                  signInForm.controls['username'].dirty
+              }"
+            />
+            <small *ngIf="errors['username']" class="p-error">{{
+              errors["username"]
+            }}</small>
+          </div>
+          <div>
+            <label for="password" class="block text-900 font-medium mb-2"
+              >Contraseña</label
+            >
+            <p-password
+              id="password"
+              formControlName="password"
+              [toggleMask]="true"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+              placeholder="Contraseña"
+              [feedback]="false"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  signInForm.controls['password'].invalid &&
+                  signInForm.controls['password'].dirty
+              }"
+            ></p-password>
+            <small *ngIf="errors['password']" class="p-error">{{
+              errors["password"]
+            }}</small>
+          </div>
 
-      <label for="password" class="block text-900 font-medium mb-2"
-        >Password</label
-      >
-      <p-password
-        id="password"
-        [(ngModel)]="password"
-        [toggleMask]="true"
-        styleClass="w-full mb-3"
-        inputStyleClass="w-full"
-        placeholder="Contraseña"
-        [feedback]="false"
-      />
-
-      <button pButton pRipple label="Iniciar sesión" class="w-full"></button>
+          <p-button
+            type="submit"
+            label="Iniciar sesión"
+            styleClass="w-full"
+          ></p-button>
+        </div>
+      </form>
     </div>
   </p-card>
+  <p-toast></p-toast>
 </div>

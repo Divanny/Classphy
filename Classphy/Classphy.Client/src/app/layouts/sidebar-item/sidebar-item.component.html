@@ -1,0 +1,10 @@
+<span class="relative">
+  <span *ngIf="isActive()"
+    style="transform: none; transform-origin: 50% 50% 0px; border-radius: 9999px; width: .3rem; left: -0.8rem; top: .5rem; bottom: .5rem; position: absolute; background: var(--p-button-primary-background)">
+  </span>
+    <p-button [styleClass]="isActive() ? 'font-medium flex justify-content-start w-full mb-1' : 'font-medium text-muted-color flex justify-content-start w-full mb-1'"
+      [severity]="isActive() ? 'primary' : 'secondary'" [text]="!isActive()" (onClick)="navigate()">
+      <span [class]="item?.icon + ' mr-2'"></span>
+      <span>{{ item?.label }}</span>
+    </p-button>
+</span>

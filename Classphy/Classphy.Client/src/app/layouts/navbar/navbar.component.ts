@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { ImportsModule } from '../../imports';
 import { MenuItem } from 'primeng/api';
 import { SideBarMobileComponent } from '../sidebar-mobile/sidebar-mobile.component';
+import { Store } from '@ngrx/store';
+import { logout } from '../../store/auth/auth.actions';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { AuthState } from '../../store/auth/auth.state';
 
 @Component({
   selector: 'app-navbar',
@@ -10,14 +15,19 @@ import { SideBarMobileComponent } from '../sidebar-mobile/sidebar-mobile.compone
   imports: [
     ImportsModule,
     SideBarMobileComponent
-  ]
+  ],
+  providers: [MessageService]
 })
 export class NavbarComponent {
-  user = { nombres: 'Juan', apellidos: 'Pérez' };  // Datos estáticos para el nombre del usuario.
+  user: any;
   isDarkMode = false;
   profileMenuItems: MenuItem[] ;
 
-  constructor() {
+  constructor(
+    private messageService: MessageService,
+    private store: Store,
+    private router: Router
+  ) {
     this.profileMenuItems = [
       {
         label: 'Cambiar tema',
@@ -30,6 +40,9 @@ export class NavbarComponent {
         command: () => this.logout()
       }
     ];
+    this.store.select((state: any) => state.auth).subscribe((authState: AuthState) => {
+      this.user = authState.user;
+    });
   }
 
   toggleDarkMode() {
@@ -39,11 +52,13 @@ export class NavbarComponent {
   }
 
   logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    localStorage.removeItem('sessionExpireTime');
-    console.log('Sesión cerrada');
-    // Navegación simulada; en tu proyecto puedes usar Router para redirigir a la página de login.
+    this.store.dispatch(logout());
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Sesión cerrada',
+      detail: 'Hasta luego 👋'
+    });
+    this.router.navigate(['/sign-in']);
   }
 
   getFirstLastName(nombres: string, apellidos: string): string {

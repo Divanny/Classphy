@@ -21,6 +21,14 @@
       {
          "Name": "[dbo].[LogErrores]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Perfiles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Usuarios]",
+         "ObjectType": 0
       }
    ],
    "UiHint": null,
