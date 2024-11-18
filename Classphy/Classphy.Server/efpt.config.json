@@ -15,6 +15,10 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[Asignaturas]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[LogActividades]",
          "ObjectType": 0
       },
@@ -24,6 +28,10 @@
       },
       {
          "Name": "[dbo].[Perfiles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Periodos]",
          "ObjectType": 0
       },
       {
