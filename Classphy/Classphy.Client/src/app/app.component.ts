@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import esLocale from '../utils/es_locale.json';
@@ -8,7 +7,7 @@ import esLocale from '../utils/es_locale.json';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  constructor(private http: HttpClient, private primengConfig: PrimeNGConfig) {}
+  constructor(private primengConfig: PrimeNGConfig) {}
 
   ngOnInit() {
     this.primengConfig.zIndex = {

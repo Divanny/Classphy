@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ImportsModule } from '../../imports';
 import { MenuItem } from 'primeng/api';
+import { SidebarItemComponent } from '../sidebar-item/sidebar-item.component';
 
 @Component({
   selector: 'app-sidebar-mobile',
   templateUrl: './sidebar-mobile.component.html',
   standalone: true,
-  imports: [ImportsModule],
+  imports: [ImportsModule, SidebarItemComponent],
 })
 export class SideBarMobileComponent implements OnInit {
   sidebarVisible: boolean = false;

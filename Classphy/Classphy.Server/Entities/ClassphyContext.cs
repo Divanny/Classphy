@@ -17,6 +17,10 @@ public partial class ClassphyContext : DbContext
 
     public virtual DbSet<LogErrores> LogErrores { get; set; }
 
+    public virtual DbSet<Perfiles> Perfiles { get; set; }
+
+    public virtual DbSet<Usuarios> Usuarios { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<LogActividades>(entity =>
@@ -58,6 +62,51 @@ public partial class ClassphyContext : DbContext
                 .IsRequired()
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+        });
+
+        modelBuilder.Entity<Perfiles>(entity =>
+        {
+            entity.HasKey(e => e.idPerfil);
+
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.Nombre)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+        });
+
+        modelBuilder.Entity<Usuarios>(entity =>
+        {
+            entity.HasKey(e => e.idUsuario);
+
+            entity.Property(e => e.Apellidos)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Contraseña)
+                .IsRequired()
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CorreoElectronico)
+                .IsRequired()
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+            entity.Property(e => e.NombreUsuario)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.Nombres)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

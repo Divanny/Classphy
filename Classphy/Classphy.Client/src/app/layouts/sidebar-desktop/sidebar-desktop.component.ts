@@ -2,21 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { ImportsModule } from '../../imports';
 import { MenuItem } from 'primeng/api';
 import { ThemeService } from '../../services/theme.service';
+import { Store } from '@ngrx/store';
+import { logout } from '../../store/auth/auth.actions';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { SidebarItemComponent } from '../sidebar-item/sidebar-item.component';
+import { AuthState } from '../../store/auth/auth.state';
 
 @Component({
   selector: 'sidebar-desktop',
   templateUrl: './sidebar-desktop.component.html',
   standalone: true,
-  imports: [ImportsModule],
+  imports: [ImportsModule, SidebarItemComponent],
+  providers: [MessageService],
 })
 export class SidebarDesktopComponent implements OnInit {
   sidebarVisible: boolean = false;
   isDarkMode: boolean = true;
   sidebarItems: MenuItem[] | undefined;
-  user = { nombres: 'Juan', apellidos: 'Pérez' };
+  user: any;
   profileMenuItems: MenuItem[] = [];
 
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private messageService: MessageService,
+    private store: Store,
+    private router: Router
+  ) {
+    
+  }
 
   toggleTheme(): void {
     this.isDarkMode = !this.isDarkMode;
@@ -37,6 +51,9 @@ export class SidebarDesktopComponent implements OnInit {
         command: () => this.logout(),
       },
     ];
+    this.store.select((state: any) => state.auth).subscribe((authState: AuthState) => {
+      this.user = authState.user;
+    });
   }
 
   getStaticSidebarItems(): MenuItem[] {
@@ -70,10 +87,13 @@ export class SidebarDesktopComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    localStorage.removeItem('sessionExpireTime');
-    console.log('Sesión cerrada');
+    this.store.dispatch(logout());
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Sesión cerrada',
+      detail: 'Hasta luego 👋'
+    });
+    this.router.navigate(['/sign-in']);
   }
 
   getFirstLastName(nombres: string, apellidos: string): string {

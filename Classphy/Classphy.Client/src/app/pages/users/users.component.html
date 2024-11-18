@@ -1,0 +1,218 @@
+<p-table
+  #dt
+  [value]="users"
+  dataKey="idUsuario"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 50]"
+  [loading]="loading"
+  [globalFilterFields]="[
+    'nombreUsuario',
+    'correoElectronico',
+    'nombres',
+    'apellidos'
+  ]"
+  sortField="fechaRegistro"
+  [sortOrder]="-1"
+  removableSort
+  styleClass="border-1 border-gray-200 rounded-lg shadow-md surface-border mt-4"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-between align-items-center my-2">
+      <div class="text-xl font-bold">Listado</div>
+      <div class="flex gap-2">
+        <button
+          pButton
+          type="button"
+          label="Nuevo Usuario"
+          icon="pi pi-plus"
+          (click)="openNew()"
+        ></button>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            [(ngModel)]="searchValue"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+            placeholder="Buscar..."
+          />
+        </span>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+        {{ col.header }}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+      <th>Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td *ngFor="let col of cols">
+        <ng-container *ngIf="col.field !== 'activo'; else statusTemplate">
+          <ng-container
+            *ngIf="col.field === 'fechaRegistro'; else defaultTemplate"
+          >
+            {{ formatFechaRegistro(user[col.field]) }}
+          </ng-container>
+          <ng-template #defaultTemplate>
+            {{ user[col.field] }}
+          </ng-template>
+        </ng-container>
+        <ng-template #statusTemplate>
+          <p-tag
+            [severity]="user.activo ? 'success' : 'warning'"
+            [value]="user.activo ? 'Activo' : 'Inactivo'"
+          ></p-tag>
+        </ng-template>
+      </td>
+      <td>
+        <button
+          pButton
+          icon="pi pi-pencil"
+          class="p-button-text"
+          (click)="editUser(user.idUsuario)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">No se han encontrado usuarios.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Detalles del Usuario"
+  [(visible)]="userDialog"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [closable]="true"
+>
+  <div class="p-fluid flex flex-column gap-3">
+    <div class="p-field">
+      <label for="nombreUsuario">Nombre de Usuario</label>
+      <input
+        id="nombreUsuario"
+        type="text"
+        pInputText
+        [(ngModel)]="user.nombreUsuario"
+        [ngClass]="{ 'ng-invalid': errors['NombreUsuario'] }"
+        required
+        autofocus
+      />
+      <small *ngIf="errors['NombreUsuario']" class="p-error">{{
+        errors["NombreUsuario"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="nombres">Nombres</label>
+      <input
+        id="nombres"
+        type="text"
+        pInputText
+        [(ngModel)]="user.nombres"
+        [ngClass]="{ 'ng-invalid': errors['Nombres'] }"
+        required
+      />
+      <small *ngIf="errors['Nombres']" class="p-error">{{
+        errors["Nombres"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="apellidos">Apellidos</label>
+      <input
+        id="apellidos"
+        type="text"
+        pInputText
+        [(ngModel)]="user.apellidos"
+        [ngClass]="{ 'ng-invalid': errors['Apellidos'] }"
+        required
+      />
+      <small *ngIf="errors['Apellidos']" class="p-error">{{
+        errors["Apellidos"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="correoElectronico">Correo Electrónico</label>
+      <input
+        id="correoElectronico"
+        type="text"
+        pInputText
+        [(ngModel)]="user.correoElectronico"
+        [ngClass]="{ 'ng-invalid': errors['CorreoElectronico'] }"
+        required
+      />
+      <small *ngIf="errors['CorreoElectronico']" class="p-error">{{
+        errors["CorreoElectronico"]
+      }}</small>
+    </div>
+    <div class="p-field" *ngIf="isNewUser">
+      <label for="password">Contraseña</label>
+      <input
+        id="password"
+        type="password"
+        pInputText
+        [(ngModel)]="password"
+        [ngClass]="{ 'ng-invalid': errors['Contraseña'] }"
+        required
+      />
+      <small *ngIf="errors['Contraseña']" class="p-error">{{
+        errors["Contraseña"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="perfil">Perfil</label>
+      <p-dropdown
+        id="perfil"
+        [options]="perfiles"
+        [(ngModel)]="user.idPerfil"
+        optionValue="idPerfil"
+        optionLabel="nombre"
+        placeholder="Seleccionar Perfil"
+        [ngClass]="{ 'ng-invalid': errors['idPerfil'] }"
+      ></p-dropdown>
+      <small *ngIf="errors['idPerfil']" class="p-error">{{
+        errors["idPerfil"]
+      }}</small>
+    </div>
+    <div class="p-field-checkbox">
+      <p-checkbox
+        inputId="activo"
+        [(ngModel)]="user.activo"
+        binary="true"
+        [ngClass]="{ 'ng-invalid': errors['Activo'] }"
+      ></p-checkbox>
+      <label for="activo" class="ml-2">Activo</label>
+      <small *ngIf="errors['Activo']" class="p-error">{{
+        errors["Activo"]
+      }}</small>
+    </div>
+    <div class="flex justify-content-between">
+      <div>
+        <button
+          pButton
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="hideDialog()"
+          class="p-button-text"
+          severity="secondary"
+        ></button>
+      </div>
+      <div>
+        <button
+          pButton
+          label="Guardar"
+          icon="pi pi-check"
+          class="p-button-text"
+          (click)="saveUser()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</p-dialog>
