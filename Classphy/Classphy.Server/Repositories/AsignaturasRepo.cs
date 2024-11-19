@@ -20,17 +20,19 @@ namespace Classphy.Server.Repositories
             (DB, filter) =>
             {
                 return (from a in DB.Set<Asignaturas>().Where(filter)
+                        join p in DB.Set<Periodos>() on a.idPeriodo equals p.idPeriodo
                         select new AsignaturasModel()
                         {
                             idAsignatura = a.idAsignatura,
                             Nombre = a.Nombre,
                             idPeriodo = a.idPeriodo,
-                            Descripcion = a.Descripcion
+                            Periodo = p.Nombre,
+                            Descripcion = a.Descripcion,
+                            CantidadEstudiantesAsociados = dbContext.Set<EstudiantesAsignatura>().Count(ea => ea.idAsignatura == a.idAsignatura)
                         });
             }
         )
         {
-
         }
     }
 }

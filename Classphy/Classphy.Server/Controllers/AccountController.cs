@@ -25,9 +25,9 @@ namespace Classphy.Server.Controllers
         }
 
         /// <summary>
-        /// Obtiene los datos del usuario y las vistas permitidas.
+        /// Obtiene los datos del usuario en línea.
         /// </summary>
-        /// <returns>Un objeto que contiene el usuario y las vistas permitidas.</returns>
+        /// <returns>Un objeto que contiene el usuario.</returns>
         [HttpGet(Name = "GetUserData")]
         [Authorize]
         public object GetUserData()

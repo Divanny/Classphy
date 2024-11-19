@@ -57,7 +57,7 @@ namespace Classphy.Server.Controllers
         {
             PeriodosModel? periodos = _periodosRepo.Get(x => x.idPeriodo == idPeriodo && x.idUsuario == _idUsuarioOnline).FirstOrDefault();
 
-            if (periodos == null) throw new Exception("Este usuario no se ha encontrado");
+            if (periodos == null) throw new Exception("Este período no se ha encontrado");
 
             return periodos;
         }
@@ -106,7 +106,7 @@ namespace Classphy.Server.Controllers
                 _periodosRepo.Edit(periodosModel);
                 _logger.LogHttpRequest(periodosModel);
 
-                return new OperationResult(true, "Usuario editado exitosamente", periodo);
+                return new OperationResult(true, "Período editado exitosamente", periodo);
             }
             catch (Exception ex)
             {

@@ -93,6 +93,12 @@
           class="p-button-text p-button-danger"
           (click)="confirmDeleteAsignatura($event, asignatura)"
         ></button>
+        <button
+          pButton
+          icon="pi pi-users"
+          class="p-button-text"
+          (click)="openStudentsDialog(asignatura)"
+        ></button>
       </td>
     </tr>
   </ng-template>
@@ -126,7 +132,7 @@
         type="text"
         pInputText
         [(ngModel)]="asignatura.nombre"
-        [ngClass]="{ 'ng-invalid': errors['Nombre'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Nombre'] }"
         required
         autofocus
       />
@@ -142,7 +148,7 @@
         cols="30"
         pInputTextarea
         [(ngModel)]="asignatura.descripcion"
-        [ngClass]="{ 'ng-invalid': errors['Descripcion'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Descripcion'] }"
         required
       ></textarea>
       <small *ngIf="errors['Descripcion']" class="p-error">{{
@@ -188,7 +194,7 @@
         type="text"
         pInputText
         [(ngModel)]="periodo.nombre"
-        [ngClass]="{ 'ng-invalid': errors['Nombre'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Nombre'] }"
         required
         autofocus
       />
@@ -257,5 +263,49 @@
         </tr>
       </ng-template>
     </p-table>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Asociar Estudiantes"
+  [(visible)]="studentsDialog"
+  [modal]="true"
+  [closable]="true"
+>
+  <p-pickList
+    [source]="availableStudents"
+    [target]="selectedStudents"
+    sourceHeader="Estudiantes Disponibles"
+    targetHeader="Estudiantes Seleccionados"
+    sourceStyle="{ height: '300px' }"
+    targetStyle="{ height: '300px' }"
+    filterBy="nombres"
+    [dragdrop]="true"
+  >
+    <ng-template let-student pTemplate="item">
+      <div class="flex align-items-center">
+        <div class="flex flex-column">
+          <div>{{ student.nombres }} {{ student.apellidos }}</div>
+          <small>{{ student.matricula }}</small>
+        </div>
+      </div>
+    </ng-template>
+  </p-pickList>
+  <div class="flex justify-content-between mt-3">
+    <button
+      pButton
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="studentsDialog = false"
+      class="p-button-text"
+      severity="secondary"
+    ></button>
+    <button
+      pButton
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveStudents()"
+    ></button>
   </div>
 </p-dialog>

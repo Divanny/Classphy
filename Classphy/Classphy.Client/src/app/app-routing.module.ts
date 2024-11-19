@@ -6,6 +6,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { AuthGuard } from './store/auth/auth.guard';
 import { LayoutComponent } from './layouts/layout/layout.component';
 import { SubjectsComponent } from './pages/subjects/subjects.component';
+import { StudentsComponent } from './pages/students/students.component';
 
 const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
@@ -16,7 +17,9 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'users', component: UsersComponent },
-      { path: 'subjects', component: SubjectsComponent }
+      { path: 'subjects', component: SubjectsComponent },
+      { path: 'students', component: StudentsComponent },
+      { path: '**', redirectTo: '' }
     ],
   },
 ];

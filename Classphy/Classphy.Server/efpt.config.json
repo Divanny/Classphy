@@ -19,6 +19,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Estudiantes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EstudiantesAsignatura]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[LogActividades]",
          "ObjectType": 0
       },

@@ -1,0 +1,294 @@
+<div class="flex justify-content-between align-items-center my-2">
+  <div class="text-xl font-bold">Estudiantes</div>
+  <div class="flex gap-2">
+    <button
+      pButton
+      type="button"
+      label="Nuevo Estudiante"
+      icon="pi pi-plus"
+      (click)="openNewStudent()"
+    ></button>
+    <p-dropdown
+      [options]="[
+        { label: 'Todos', value: null },
+        { label: 'Masculino', value: 'M' },
+        { label: 'Femenino', value: 'F' }
+      ]"
+      [(ngModel)]="genderFilter"
+      placeholder="Filtrar por Género"
+      (onChange)="loadStudents()"
+    ></p-dropdown>
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchValue"
+        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+        placeholder="Buscar..."
+      />
+    </span>
+  </div>
+</div>
+<p-table
+  #dt
+  [value]="students"
+  dataKey="idEstudiante"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 50]"
+  [globalFilterFields]="[
+    'nombres',
+    'apellidos',
+    'matricula',
+    'correo',
+    'telefono',
+    'genero',
+    'cantidadAsignaturasAsociadas'
+  ]"
+  sortField="nombres"
+  [sortOrder]="1"
+  removableSort
+  styleClass="border-1 border-gray-200 rounded-lg shadow-md surface-border mt-4"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="nombres">
+        Nombres <p-sortIcon field="nombres"></p-sortIcon>
+      </th>
+      <th pSortableColumn="apellidos">
+        Apellidos <p-sortIcon field="apellidos"></p-sortIcon>
+      </th>
+      <th pSortableColumn="matricula">
+        Matrícula <p-sortIcon field="matricula"></p-sortIcon>
+      </th>
+      <th pSortableColumn="correo">
+        Correo <p-sortIcon field="correo"></p-sortIcon>
+      </th>
+      <th pSortableColumn="telefono">
+        Teléfono <p-sortIcon field="telefono"></p-sortIcon>
+      </th>
+      <th pSortableColumn="genero">
+        Género <p-sortIcon field="genero"></p-sortIcon>
+      </th>
+      <th pSortableColumn="cantidadAsignaturasAsociadas">
+        Asignaturas
+        <p-sortIcon field="cantidadAsignaturasAsociadas"></p-sortIcon>
+      </th>
+      <th>Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-student>
+    <tr>
+      <td>{{ student.nombres }}</td>
+      <td>{{ student.apellidos }}</td>
+      <td>{{ student.matricula }}</td>
+      <td>{{ student.correo }}</td>
+      <td>{{ student.telefono }}</td>
+      <td>
+        {{
+          student.genero === "M"
+            ? "Masculino"
+            : student.genero === "F"
+            ? "Femenino"
+            : ""
+        }}
+      </td>
+      <td>
+        <p-badge
+          [value]="student.cantidadAsignaturasAsociadas"
+          severity="secondary"
+        />
+      </td>
+      <td>
+        <button
+          pButton
+          icon="pi pi-pencil"
+          class="p-button-text"
+          (click)="editStudent(student)"
+        ></button>
+        <button
+          pButton
+          icon="pi pi-trash"
+          class="p-button-text p-button-danger"
+          (click)="confirmDeleteStudent($event, student)"
+        ></button>
+        <button
+          pButton
+          icon="pi pi-book"
+          class="p-button-text"
+          (click)="openSubjectsDialog(student)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">No se han encontrado estudiantes.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmPopup></p-confirmPopup>
+
+<p-dialog
+  header="Detalles del Estudiante"
+  [(visible)]="studentDialog"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [closable]="true"
+>
+  <div class="p-fluid flex flex-column gap-3">
+    <div class="p-field">
+      <label for="nombres">Nombres</label>
+      <input
+        id="nombres"
+        type="text"
+        pInputText
+        [(ngModel)]="student.nombres"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Nombres'] }"
+        required
+        autofocus
+      />
+      <small *ngIf="errors['Nombres']" class="p-error">{{
+        errors["Nombres"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="apellidos">Apellidos</label>
+      <input
+        id="apellidos"
+        type="text"
+        pInputText
+        [(ngModel)]="student.apellidos"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Apellidos'] }"
+        required
+      />
+      <small *ngIf="errors['Apellidos']" class="p-error">{{
+        errors["Apellidos"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="matricula">Matrícula</label>
+      <input
+        id="matricula"
+        type="text"
+        pInputText
+        [(ngModel)]="student.matricula"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Matricula'] }"
+        required
+      />
+      <small *ngIf="errors['Matricula']" class="p-error">{{
+        errors["Matricula"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="correo">Correo</label>
+      <input
+        id="correo"
+        type="email"
+        pInputText
+        [(ngModel)]="student.correo"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Correo'] }"
+        required
+      />
+      <small *ngIf="errors['Correo']" class="p-error">{{
+        errors["Correo"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="telefono">Teléfono</label>
+      <p-inputMask
+        id="telefono"
+        mask="(999) 999-9999"
+        [(ngModel)]="student.telefono"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Telefono'] }"
+      ></p-inputMask>
+      <small *ngIf="errors['Telefono']" class="p-error">{{
+        errors["Telefono"]
+      }}</small>
+    </div>
+    <div class="p-field">
+      <label for="genero">Género</label>
+      <p-dropdown
+        id="genero"
+        appendTo="body"
+        [options]="[
+          { label: 'Masculino', value: 'M' },
+          { label: 'Femenino', value: 'F' }
+        ]"
+        [(ngModel)]="student.genero"
+        placeholder="Seleccionar Género"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Genero'] }"
+      ></p-dropdown>
+      <small *ngIf="errors['Genero']" class="p-error">{{
+        errors["Genero"]
+      }}</small>
+    </div>
+    <div class="flex justify-content-between">
+      <div>
+        <button
+          pButton
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="hideDialog()"
+          class="p-button-text"
+          severity="secondary"
+        ></button>
+      </div>
+      <div>
+        <button
+          pButton
+          label="Guardar"
+          icon="pi pi-check"
+          class="p-button-text"
+          (click)="saveStudent()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Asociar Asignaturas"
+  [(visible)]="subjectsDialog"
+  [modal]="true"
+  [closable]="true"
+>
+  <p-pickList
+    [source]="availableSubjects"
+    [target]="selectedSubjects"
+    sourceHeader="Asignaturas Disponibles"
+    targetHeader="Asignaturas Seleccionadas"
+    sourceStyle="{ height: '300px' }"
+    targetStyle="{ height: '300px' }"
+    filterBy="nombre"
+    [dragdrop]="true"
+  >
+    <ng-template let-subject pTemplate="item">
+      <div class="flex align-items-center">
+        <div class="flex flex-column">
+          <div>{{ subject.nombre }}</div>
+          <small>{{ subject.periodo }}</small>
+        </div>
+      </div>
+    </ng-template>
+  </p-pickList>
+  <div class="flex justify-content-between mt-3">
+    <button
+      pButton
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="subjectsDialog = false"
+      class="p-button-text"
+      severity="secondary"
+    ></button>
+    <button
+      pButton
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveSubjects()"
+    ></button>
+  </div>
+</p-dialog>
