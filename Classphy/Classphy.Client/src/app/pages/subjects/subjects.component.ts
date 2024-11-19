@@ -68,6 +68,7 @@ export class SubjectsComponent implements OnInit {
 
   openPeriodoDialog() {
     this.periodoDialog = true;
+    this.errors = {};
   }
 
   openNewPeriodo() {

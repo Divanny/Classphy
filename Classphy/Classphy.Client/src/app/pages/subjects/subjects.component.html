@@ -126,12 +126,12 @@
         type="text"
         pInputText
         [(ngModel)]="asignatura.nombre"
-        [ngClass]="{ 'ng-invalid': errors['nombre'] }"
+        [ngClass]="{ 'ng-invalid': errors['Nombre'] }"
         required
         autofocus
       />
-      <small *ngIf="errors['nombre']" class="p-error">{{
-        errors["nombre"]
+      <small *ngIf="errors['Nombre']" class="p-error">{{
+        errors["Nombre"]
       }}</small>
     </div>
     <div class="p-field">
@@ -142,11 +142,11 @@
         cols="30"
         pInputTextarea
         [(ngModel)]="asignatura.descripcion"
-        [ngClass]="{ 'ng-invalid': errors['descripcion'] }"
+        [ngClass]="{ 'ng-invalid': errors['Descripcion'] }"
         required
       ></textarea>
-      <small *ngIf="errors['descripcion']" class="p-error">{{
-        errors["descripcion"]
+      <small *ngIf="errors['Descripcion']" class="p-error">{{
+        errors["Descripcion"]
       }}</small>
     </div>
     <div class="flex justify-content-between">
@@ -188,12 +188,12 @@
         type="text"
         pInputText
         [(ngModel)]="periodo.nombre"
-        [ngClass]="{ 'ng-invalid': errors['nombre'] }"
+        [ngClass]="{ 'ng-invalid': errors['Nombre'] }"
         required
         autofocus
       />
-      <small *ngIf="errors['nombre']" class="p-error">{{
-        errors["nombre"]
+      <small *ngIf="errors['Nombre']" class="p-error">{{
+        errors["Nombre"]
       }}</small>
     </div>
     <div class="flex justify-content-end">
