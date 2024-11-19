@@ -37,7 +37,12 @@ export class ApiService {
             );
             localStorage.removeItem('token');
             this.router.navigate(['/sign-in']);
-          } else {
+          }
+          else if (status === 403) {
+            this.router.navigate(['/']);
+            console.error('No tienes permisos para realizar esta acción');
+          }
+          else {
             console.error('Operación fallida', error.message);
           }
         } else {

@@ -32,7 +32,7 @@ export class SideBarMobileComponent implements OnInit {
       },
       { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/Reportes' },
       { label: 'Usuarios', icon: 'pi pi-user', routerLink: '/users' },
-      { label: 'Materias', icon: 'pi pi-book', routerLink: '/subjects' },
+      { label: 'Asignaturas', icon: 'pi pi-book', routerLink: '/subjects' },
       {
         label: 'Estudiantes',
         icon: 'pi pi-graduation-cap',

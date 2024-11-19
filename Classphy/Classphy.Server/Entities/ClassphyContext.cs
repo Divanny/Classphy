@@ -13,16 +13,34 @@ public partial class ClassphyContext : DbContext
     {
     }
 
+    public virtual DbSet<Asignaturas> Asignaturas { get; set; }
+
     public virtual DbSet<LogActividades> LogActividades { get; set; }
 
     public virtual DbSet<LogErrores> LogErrores { get; set; }
 
     public virtual DbSet<Perfiles> Perfiles { get; set; }
 
+    public virtual DbSet<Periodos> Periodos { get; set; }
+
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Asignaturas>(entity =>
+        {
+            entity.HasKey(e => e.idAsignatura).HasName("PK_Materias");
+
+            entity.Property(e => e.Descripcion)
+                .IsRequired()
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Nombre)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<LogActividades>(entity =>
         {
             entity.HasKey(e => e.idLogActividad);
@@ -77,6 +95,17 @@ public partial class ClassphyContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+        });
+
+        modelBuilder.Entity<Periodos>(entity =>
+        {
+            entity.HasKey(e => e.idPeriodo);
+
+            entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+            entity.Property(e => e.Nombre)
+                .IsRequired()
+                .HasMaxLength(150)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Usuarios>(entity =>
