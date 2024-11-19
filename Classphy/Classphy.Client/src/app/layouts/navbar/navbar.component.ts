@@ -16,7 +16,7 @@ import { AuthState } from '../../store/auth/auth.state';
     ImportsModule,
     SideBarMobileComponent
   ],
-  providers: [MessageService]
+  providers: []
 })
 export class NavbarComponent {
   user: any;

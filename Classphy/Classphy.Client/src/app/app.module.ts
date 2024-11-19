@@ -11,6 +11,8 @@ import { authReducer } from './store/auth/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/auth/auth.effects';
 import { AuthGuard } from './store/auth/auth.guard';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -20,8 +22,9 @@ import { AuthGuard } from './store/auth/auth.guard';
     AppRoutingModule,
     StoreModule.forRoot({ auth: authReducer }),
     EffectsModule.forRoot([AuthEffects]),
+    ToastModule
   ],
-  providers: [ThemeService, ApiService, AuthGuard],
+  providers: [ThemeService, ApiService, AuthGuard, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   standalone: true,
-  providers: [MessageService],
+  providers: [],
   imports: [
     CommonModule,
     ImportsModule,

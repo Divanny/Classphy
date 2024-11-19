@@ -75,6 +75,10 @@ body {
   flex-grow: 1;
 }
 
+.p-confirm-popup .p-confirm-popup-content {
+  padding: 1.125rem;
+}
+
 @media (min-width: 992px) {
   .pl-20 {
     padding-left: 20rem;

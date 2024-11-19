@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
+import { PrimeNGConfig, MessageService } from 'primeng/api';
 import esLocale from '../utils/es_locale.json';
 
 @Component({
@@ -7,7 +7,7 @@ import esLocale from '../utils/es_locale.json';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  constructor(private primengConfig: PrimeNGConfig) {}
+  constructor(private primengConfig: PrimeNGConfig, private messageService: MessageService) {}
 
   ngOnInit() {
     this.primengConfig.zIndex = {
@@ -17,6 +17,9 @@ export class AppComponent implements OnInit {
       tooltip: 1100,
     };
     this.primengConfig.setTranslation(esLocale);
+
+    // Example of using MessageService to show a toast
+    this.messageService.add({severity:'success', summary:'Service Message', detail:'Via MessageService'});
   }
 
   title = 'Classphy';

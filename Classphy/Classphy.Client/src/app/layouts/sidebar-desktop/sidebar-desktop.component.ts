@@ -14,7 +14,7 @@ import { AuthState } from '../../store/auth/auth.state';
   templateUrl: './sidebar-desktop.component.html',
   standalone: true,
   imports: [ImportsModule, SidebarItemComponent],
-  providers: [MessageService],
+  providers: [],
 })
 export class SidebarDesktopComponent implements OnInit {
   sidebarVisible: boolean = false;
@@ -70,7 +70,7 @@ export class SidebarDesktopComponent implements OnInit {
       },
       { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/Reportes' },
       { label: 'Usuarios', icon: 'pi pi-user', routerLink: '/users' },
-      { label: 'Materias', icon: 'pi pi-book', routerLink: '/subjects' },
+      { label: 'Asignaturas', icon: 'pi pi-book', routerLink: '/subjects' },
       {
         label: 'Estudiantes',
         icon: 'pi pi-graduation-cap',
