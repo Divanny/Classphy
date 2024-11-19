@@ -15,6 +15,8 @@ public partial class ClassphyContext : DbContext
 
     public virtual DbSet<Asignaturas> Asignaturas { get; set; }
 
+    public virtual DbSet<Asistencias> Asistencias { get; set; }
+
     public virtual DbSet<Estudiantes> Estudiantes { get; set; }
 
     public virtual DbSet<EstudiantesAsignatura> EstudiantesAsignatura { get; set; }
@@ -43,6 +45,13 @@ public partial class ClassphyContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Asistencias>(entity =>
+        {
+            entity.HasKey(e => e.idAsistencia);
+
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Estudiantes>(entity =>

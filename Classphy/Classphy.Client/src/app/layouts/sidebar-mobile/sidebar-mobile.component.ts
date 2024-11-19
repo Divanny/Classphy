@@ -30,7 +30,7 @@ export class SideBarMobileComponent implements OnInit {
         icon: 'pi pi-search',
         routerLink: '/Consultas',
       },
-      { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/Reportes' },
+      { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/attendance' },
       { label: 'Usuarios', icon: 'pi pi-user', routerLink: '/users' },
       { label: 'Asignaturas', icon: 'pi pi-book', routerLink: '/subjects' },
       {
