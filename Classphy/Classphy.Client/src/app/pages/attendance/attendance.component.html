@@ -1,0 +1,211 @@
+<div class="flex flex-wrap justify-content-between align-items-center my-2">
+  <div class="text-xl font-bold">Seguimiento de Asistencia</div>
+  <div class="flex flex-wrap gap-2">
+    <p-dropdown
+      [options]="asignaturas"
+      [(ngModel)]="selectedAsignatura"
+      optionLabel="nombre"
+      placeholder="Seleccionar Asignatura"
+      class="w-full md:w-auto"
+      styleClass="w-full md:w-auto"
+      (ngModelChange)="loadAttendance()"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div class="flex align-items-center" *ngIf="selectedAsignatura">
+          <div class="flex align-items-center gap-2">
+            <div>{{ selectedAsignatura.nombre }}</div>
+            <small>{{ selectedAsignatura.periodo }}</small>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template let-asignatura pTemplate="item">
+        <div class="flex align-items-center">
+          <div class="flex flex-column">
+            <div>{{ asignatura.nombre }}</div>
+            <small>{{ asignatura.periodo }}</small>
+          </div>
+        </div>
+      </ng-template>
+    </p-dropdown>
+    <div class="flex gap-2 w-full md:w-auto">
+      <p-calendar
+        [(ngModel)]="selectedDate"
+        placeholder="Seleccionar Fecha"
+        dateFormat="dd 'de' MM 'del' yy"
+        class="w-full md:w-auto"
+        styleClass="w-full md:w-auto"
+        (ngModelChange)="checkDateValidity(); loadAttendance()"
+        [maxDate]="today"
+      ></p-calendar>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-search"
+        severity="secondary"
+        (click)="loadAttendance()"
+        [text]="true"
+        [disabled]="!selectedAsignatura || !selectedDate"
+      ></button>
+    </div>
+    <button
+      pButton
+      type="button"
+      label="Guardar Asistencia"
+      icon="pi pi-save"
+      (click)="saveAttendance()"
+      [disabled]="
+        !selectedAsignatura ||
+        !selectedDate ||
+        !isDateValid ||
+        attendanceRecords.length === 0
+      "
+      class="w-full md:w-auto"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Pase de Lista"
+      icon="pi pi-list"
+      severity="secondary"
+      (click)="startRollCall()"
+      *ngIf="
+        selectedAsignatura && selectedDate && attendanceRecords.length != 0
+      "
+      class="w-full md:w-auto"
+    ></button>
+  </div>
+</div>
+
+<p-message
+  *ngIf="!selectedAsignatura || !selectedDate"
+  severity="warn"
+  text="Debe especificar la asignatura y la fecha para realizar la búsqueda."
+></p-message>
+
+<p-table
+  #dt
+  [value]="attendanceRecords"
+  dataKey="idAsistencia"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 50]"
+  [loading]="!selectedAsignatura || !selectedDate"
+  styleClass="border-1 border-gray-200 rounded-lg shadow-md surface-border mt-4 w-full"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Estudiante</th>
+      <th>Matrícula</th>
+      <th>Correo</th>
+      <th>Fecha</th>
+      <th class="w-8rem">Presente</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-record>
+    <tr>
+      <td>{{ record.nombres }} {{ record.apellidos }}</td>
+      <td>{{ record.matricula }}</td>
+      <td>{{ record.correo }}</td>
+      <td>{{ record.fecha | date : "dd 'de' MMMM 'de' yyyy" : "es" }}</td>
+      <td>
+        <p-checkbox [(ngModel)]="record.presente" [binary]="true"></p-checkbox>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4">
+        No se han encontrado estudiantes para la asignatura y fecha
+        seleccionadas.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Registrar Asistencia"
+  [(visible)]="attendanceDialog"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [closable]="true"
+>
+  <div class="p-fluid flex flex-column gap-3">
+    <!-- Implementar formulario para registrar asistencia -->
+    <div class="flex justify-content-between">
+      <div>
+        <button
+          pButton
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="hideDialog()"
+          class="p-button-text"
+          severity="secondary"
+        ></button>
+      </div>
+      <div>
+        <button
+          pButton
+          label="Guardar"
+          icon="pi pi-check"
+          class="p-button-text"
+          (click)="saveAttendance()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Pase de Lista"
+  [(visible)]="rollCallDialog"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [closable]="true"
+>
+  <div class="p-fluid flex flex-column gap-3">
+    <div *ngIf="currentRollCallIndex < attendanceRecords.length">
+      <div class="student-info">
+        <h3>
+          {{ attendanceRecords[currentRollCallIndex].nombres }}
+          {{ attendanceRecords[currentRollCallIndex].apellidos }}
+        </h3>
+        <p>
+          <strong>Matrícula:</strong>
+          {{ attendanceRecords[currentRollCallIndex].matricula }}
+        </p>
+        <p>
+          <strong>Teléfono:</strong>
+          {{ attendanceRecords[currentRollCallIndex].telefono }}
+        </p>
+        <p>
+          <strong>Correo:</strong>
+          {{ attendanceRecords[currentRollCallIndex].correo }}
+        </p>
+      </div>
+    </div>
+    <div class="flex justify-content-center gap-2">
+      <button
+        pButton
+        label="No Presente"
+        icon="pi pi-times"
+        (click)="markAbsent()"
+        severity="secondary"
+      ></button>
+      <button
+        pButton
+        label="Presente"
+        icon="pi pi-check"
+        (click)="markPresent()"
+        severity="primary"
+      ></button>
+    </div>
+    <div class="flex justify-content-center">
+      <p-button
+        label="Volver al estudiante anterior"
+        (click)="previousRollCall()"
+        [link]="true"
+        *ngIf="currentRollCallIndex != 0"
+      />
+    </div>
+  </div>
+</p-dialog>

@@ -36,7 +36,7 @@ export class SubjectsComponent implements OnInit {
   selectedPeriodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: '' };
   asignaturaDialog: boolean = false;
   periodoDialog: boolean = false;
-  asignatura: Asignatura = { idAsignatura: 0, nombre: '', idPeriodo: 0, descripcion: '', cantidadEstudiantesAsociados: 0, estudiantes: [] };
+  asignatura: Asignatura = { idAsignatura: 0, nombre: '', idPeriodo: 0, periodo: '', descripcion: '', cantidadEstudiantesAsociados: 0, estudiantes: [] };
   periodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: '' };
   isNewAsignatura: boolean = false;
   isNewPeriodo: boolean = true;
@@ -65,7 +65,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   openNewAsignatura() {
-    this.asignatura = { idAsignatura: 0, nombre: '', idPeriodo: this.selectedPeriodo?.idPeriodo || 0, descripcion: '', cantidadEstudiantesAsociados: 0, estudiantes: [] };
+    this.asignatura = { idAsignatura: 0, nombre: '', idPeriodo: this.selectedPeriodo?.idPeriodo || 0, periodo: '', descripcion: '', cantidadEstudiantesAsociados: 0, estudiantes: [] };
     this.isNewAsignatura = true;
     this.asignaturaDialog = true;
     this.errors = {};

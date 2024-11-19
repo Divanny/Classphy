@@ -41,9 +41,21 @@ namespace Classphy.Server.Controllers
         /// Obtiene todos los asignaturas de un usuario de un período en específico.
         /// </summary>
         /// <returns>Lista de usuarios.</returns>
-        [HttpGet("{idPeriodo}", Name = "GetAsignaturas")]
+        [HttpGet(Name = "GetAsignaturas")]
         [AuthorizeByProfile(PerfilesEnum.Profesor)]
-        public List<AsignaturasModel> Get(int idPeriodo)
+        public List<AsignaturasModel> Get()
+        {
+            var periodosUsuario = _classphyContext.Set<Periodos>().Where(x => x.idUsuario == _idUsuarioOnline).Select(x => x.idPeriodo).ToList();
+            return _estudiantesRepo.asignaturasRepo.Get(x => periodosUsuario.Contains(x.idPeriodo)).ToList();
+        }
+
+        /// <summary>
+        /// Obtiene todos los asignaturas de un usuario de un período en específico.
+        /// </summary>
+        /// <returns>Lista de usuarios.</returns>
+        [HttpGet("{idPeriodo}", Name = "GetAsignaturasPorPeriodo")]
+        [AuthorizeByProfile(PerfilesEnum.Profesor)]
+        public List<AsignaturasModel> GetAsignaturasPorPeriodo(int idPeriodo)
         {
             List<AsignaturasModel> asignaturas = _asignaturasRepo.Get(x => x.idPeriodo == idPeriodo).ToList();
             asignaturas.ForEach(asignatura => asignatura.Estudiantes = GetEstudiantesAsignatura(asignatura.idAsignatura).ToList());

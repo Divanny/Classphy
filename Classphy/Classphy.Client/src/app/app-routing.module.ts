@@ -7,6 +7,7 @@ import { AuthGuard } from './store/auth/auth.guard';
 import { LayoutComponent } from './layouts/layout/layout.component';
 import { SubjectsComponent } from './pages/subjects/subjects.component';
 import { StudentsComponent } from './pages/students/students.component';
+import { AttendanceComponent } from './pages/attendance/attendance.component';
 
 const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'subjects', component: SubjectsComponent },
       { path: 'students', component: StudentsComponent },
+      { path: 'attendance', component: AttendanceComponent },
       { path: '**', redirectTo: '' }
     ],
   },

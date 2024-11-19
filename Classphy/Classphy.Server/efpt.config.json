@@ -19,6 +19,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Asistencias]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Estudiantes]",
          "ObjectType": 0
       },
