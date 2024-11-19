@@ -15,6 +15,10 @@ public partial class ClassphyContext : DbContext
 
     public virtual DbSet<Asignaturas> Asignaturas { get; set; }
 
+    public virtual DbSet<Estudiantes> Estudiantes { get; set; }
+
+    public virtual DbSet<EstudiantesAsignatura> EstudiantesAsignatura { get; set; }
+
     public virtual DbSet<LogActividades> LogActividades { get; set; }
 
     public virtual DbSet<LogErrores> LogErrores { get; set; }
@@ -39,6 +43,41 @@ public partial class ClassphyContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Estudiantes>(entity =>
+        {
+            entity.HasKey(e => e.idEstudiante);
+
+            entity.Property(e => e.Apellidos)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Correo)
+                .IsRequired()
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Genero)
+                .IsRequired()
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength();
+            entity.Property(e => e.Matricula)
+                .IsRequired()
+                .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.Nombres)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(15)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<EstudiantesAsignatura>(entity =>
+        {
+            entity.HasKey(e => e.idEstudianteAsignatura).HasName("PK_EstudianteAsignatura");
         });
 
         modelBuilder.Entity<LogActividades>(entity =>

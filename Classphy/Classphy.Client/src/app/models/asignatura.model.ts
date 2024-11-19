@@ -3,4 +3,6 @@ export interface Asignatura {
   nombre: string;
   idPeriodo: number;
   descripcion: string;
+  cantidadEstudiantesAsociados: number;
+  estudiantes: any[]; 
 }

@@ -102,7 +102,7 @@
         type="text"
         pInputText
         [(ngModel)]="user.nombreUsuario"
-        [ngClass]="{ 'ng-invalid': errors['NombreUsuario'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['NombreUsuario'] }"
         required
         autofocus
       />
@@ -117,7 +117,7 @@
         type="text"
         pInputText
         [(ngModel)]="user.nombres"
-        [ngClass]="{ 'ng-invalid': errors['Nombres'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Nombres'] }"
         required
       />
       <small *ngIf="errors['Nombres']" class="p-error">{{
@@ -131,7 +131,7 @@
         type="text"
         pInputText
         [(ngModel)]="user.apellidos"
-        [ngClass]="{ 'ng-invalid': errors['Apellidos'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Apellidos'] }"
         required
       />
       <small *ngIf="errors['Apellidos']" class="p-error">{{
@@ -145,7 +145,7 @@
         type="text"
         pInputText
         [(ngModel)]="user.correoElectronico"
-        [ngClass]="{ 'ng-invalid': errors['CorreoElectronico'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['CorreoElectronico'] }"
         required
       />
       <small *ngIf="errors['CorreoElectronico']" class="p-error">{{
@@ -159,7 +159,7 @@
         type="password"
         pInputText
         [(ngModel)]="password"
-        [ngClass]="{ 'ng-invalid': errors['Contraseña'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Contraseña'] }"
         required
       />
       <small *ngIf="errors['Contraseña']" class="p-error">{{
@@ -170,12 +170,13 @@
       <label for="perfil">Perfil</label>
       <p-dropdown
         id="perfil"
+        appendTo="body"
         [options]="perfiles"
         [(ngModel)]="user.idPerfil"
         optionValue="idPerfil"
         optionLabel="nombre"
         placeholder="Seleccionar Perfil"
-        [ngClass]="{ 'ng-invalid': errors['idPerfil'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['idPerfil'] }"
       ></p-dropdown>
       <small *ngIf="errors['idPerfil']" class="p-error">{{
         errors["idPerfil"]
@@ -186,7 +187,7 @@
         inputId="activo"
         [(ngModel)]="user.activo"
         binary="true"
-        [ngClass]="{ 'ng-invalid': errors['Activo'] }"
+        [ngClass]="{ 'ng-invalid ng-dirty': errors['Activo'] }"
       ></p-checkbox>
       <label for="activo" class="ml-2">Activo</label>
       <small *ngIf="errors['Activo']" class="p-error">{{

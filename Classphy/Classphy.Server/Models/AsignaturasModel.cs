@@ -13,7 +13,10 @@ public class AsignaturasModel
 
     [Required(ErrorMessage = "Debe especificar el periodo al que pertenece la asignatura")]
     public int idPeriodo { get; set; }
+    public string? Periodo { get; set; }
 
     [Required(ErrorMessage = "Debe especificar la descripción de la asignatura")]
     public string? Descripcion { get; set; }
+    public int CantidadEstudiantesAsociados { get; set; }
+    public List<EstudiantesModel>? Estudiantes { get; set; }
 }

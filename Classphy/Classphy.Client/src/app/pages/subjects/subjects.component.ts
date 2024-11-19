@@ -12,6 +12,7 @@ import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { DatePipe } from '@angular/common';
+import { PickListModule } from 'primeng/picklist';
 
 @Component({
   selector: 'app-subjects',
@@ -25,6 +26,7 @@ import { DatePipe } from '@angular/common';
     TagModule,
     DialogModule,
     DropdownModule,
+    PickListModule,
   ],
   providers: [DatePipe, ConfirmationService],
 })
@@ -34,12 +36,15 @@ export class SubjectsComponent implements OnInit {
   selectedPeriodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: '' };
   asignaturaDialog: boolean = false;
   periodoDialog: boolean = false;
-  asignatura: Asignatura = { idAsignatura: 0, nombre: '', idPeriodo: 0, descripcion: '' };
+  asignatura: Asignatura = { idAsignatura: 0, nombre: '', idPeriodo: 0, descripcion: '', cantidadEstudiantesAsociados: 0, estudiantes: [] };
   periodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: '' };
   isNewAsignatura: boolean = false;
   isNewPeriodo: boolean = true;
   errors: { [key: string]: string } = {};
   searchValue: string | undefined;
+  availableStudents: any[] = [];
+  selectedStudents: any[] = [];
+  studentsDialog: boolean = false;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private confirmationService: ConfirmationService) {}
 
@@ -60,7 +65,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   openNewAsignatura() {
-    this.asignatura = { idAsignatura: 0, nombre: '', idPeriodo: this.selectedPeriodo?.idPeriodo || 0, descripcion: '' };
+    this.asignatura = { idAsignatura: 0, nombre: '', idPeriodo: this.selectedPeriodo?.idPeriodo || 0, descripcion: '', cantidadEstudiantesAsociados: 0, estudiantes: [] };
     this.isNewAsignatura = true;
     this.asignaturaDialog = true;
     this.errors = {};
@@ -188,6 +193,35 @@ export class SubjectsComponent implements OnInit {
       this.loadPeriodos();
     } else {
       this.messageService.add({ severity: 'warn', summary: 'Error al eliminar periodo', detail: response.data.message });
+    }
+  }
+
+  async openStudentsDialog(asignatura: Asignatura) {
+    this.asignatura = { ...asignatura };
+    const response = await this.apiService.api.get('/Asignaturas/GetEstudiantesDisponibles');
+    this.availableStudents = response.data.filter((student: any) => 
+      !asignatura.estudiantes.some((assigned: any) => assigned.idEstudiante === student.idEstudiante)
+    );
+    this.selectedStudents = asignatura.estudiantes || [];
+    this.studentsDialog = true;
+  }
+
+  async saveStudents() {
+    const response = await this.apiService.api.put(`/Asignaturas/AsociarEstudiantes/${this.asignatura.idAsignatura}`, this.selectedStudents);
+    if (response.data.success) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Estudiantes asociados',
+        detail: 'Los estudiantes han sido asociados exitosamente.',
+      });
+      this.loadAsignaturas();
+      this.studentsDialog = false;
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Error al asociar estudiantes',
+        detail: response.data.message,
+      });
     }
   }
 }

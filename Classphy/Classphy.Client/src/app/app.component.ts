@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
       overlay: 1000,
       menu: 1000,
       tooltip: 1100,
+      toast: 1400
     };
     this.primengConfig.setTranslation(esLocale);
 
