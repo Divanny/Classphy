@@ -53,7 +53,6 @@ export class StudentsComponent implements OnInit {
     const response = await this.apiService.api.get('/Estudiantes');
     this.students = response.data;
     if (this.genderFilter) {
-      console.log(this.genderFilter);
       this.students = this.students.filter(student => student.genero === this.genderFilter);
     }
   }

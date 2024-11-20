@@ -125,7 +125,6 @@ export class UsersComponent {
         `/usuarios/${this.user.idUsuario}`,
         this.user
       );
-      console.log(response);
       if (response.data.success) {
         this.messageService.add({
           severity: 'success',

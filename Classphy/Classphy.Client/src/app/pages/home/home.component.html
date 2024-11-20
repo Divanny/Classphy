@@ -1,2 +1,42 @@
-<p>home worasdks!</p>
-<p-button label="Click Me" icon="pi pi-check"></p-button>
+<div class="home-container">
+  <img src="../../assets/classphy.png" alt="Classphy Logo" class="logo" />
+  <p-card header="Bienvenido">
+    <h1>{{ welcomeMessage }}</h1>
+    <p>Explora las funcionalidades de nuestro sistema:</p>
+  </p-card>
+
+  <div class="features">
+    <div *ngFor="let feature of features" class="feature-card">
+      <i [class]="feature.icon" style="font-size: 2em"></i>
+      <h2 class="mb-0">{{ feature.title }}</h2>
+      <p>{{ feature.description }}</p>
+      <button
+        pButton
+        label="Ir"
+        icon="pi pi-arrow-right"
+        (click)="navigateTo(feature.route)"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .home-container {
+    text-align: center;
+    padding: 2em;
+  }
+  .logo {
+    width: 150px;
+    margin-bottom: 1em;
+  }
+  .features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 2em;
+  }
+  .feature-card {
+    width: 300px;
+    margin: 1em;
+  }
+</style>
