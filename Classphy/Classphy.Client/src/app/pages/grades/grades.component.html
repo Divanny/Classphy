@@ -37,6 +37,13 @@
       [loading]="loadingGrades"
       class="w-full md:w-auto"
     ></button>
+    <button
+      pButton
+      icon="pi pi-print"
+      severity="secondary"
+      (click)="generatePDF()"
+      [disabled]="!selectedAsignatura || grades.length === 0"
+    ></button>
   </div>
 </div>
 

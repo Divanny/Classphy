@@ -66,7 +66,6 @@ export class AttendanceComponent implements OnInit {
 
   async loadAsignaturas() {
     const response = await this.apiService.api.get('/Asignaturas');
-    console.log(response);
     this.asignaturas = response.data;
     this.loadAttendance();
   }

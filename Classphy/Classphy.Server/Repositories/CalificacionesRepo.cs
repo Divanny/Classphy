@@ -32,6 +32,7 @@ namespace Classphy.Server.Repositories
                             Matricula = e.Matricula,
                             Correo = e.Correo,
                             MedioTermino = c.MedioTermino,
+                            CantidadFaltas = dbContext.Set<Asistencias>().Count(a => a.idEstudiante == c.idEstudiante && a.idAsignatura == c.idAsignatura && a.Presente == false),
                             Final = c.Final
                         });
             }

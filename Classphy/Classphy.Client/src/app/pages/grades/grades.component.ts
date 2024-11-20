@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
@@ -11,6 +12,14 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: any) => jsPDF;
+  }
+}
 
 registerLocaleData(localeEs, 'es');
 
@@ -79,5 +88,64 @@ export class GradesComponent implements OnInit {
     if (total >= 80) return 'B';
     if (total >= 70) return 'C';
     return 'F';
+  }
+
+  calculateAcumulada(grade: any) {
+    if (grade.final === null) return grade.medioTermino;
+    return grade.medioTermino + grade.final;
+  }
+
+  generatePDF() {
+    const doc = new jsPDF();
+    const logo = new Image();
+    logo.src = '../../assets/classphy.png';
+
+    logo.onload = () => {
+      const logoWidth = 50;
+      const logoHeight = (logoWidth / 866) * 186; // Maintain aspect ratio
+      doc.addImage(logo, 'PNG', 14, 10, logoWidth, logoHeight);
+
+      doc.setFontSize(18);
+      doc.text('Reporte de Calificaciones', 14, 50);
+
+      const isFinalReport = this.grades.some(grade => grade.final !== null);
+      const reportType = isFinalReport ? 'Calificación Final' : 'Calificación de Medio Término';
+      doc.setFontSize(14);
+      doc.text(`Asignatura: ${this.selectedAsignatura?.nombre}`, 14, 60);
+      doc.text(`Periodo: ${this.selectedAsignatura?.periodo}`, 14, 66);
+      doc.text(`Tipo de Reporte: ${reportType}`, 14, 72);
+
+      const columns = ['Estudiante', 'Matrícula', 'Faltas', 'Medio Término', 'Final', 'Acumulada', 'Literal'];
+      const rows = this.grades.map(grade => [
+        `${grade.nombres} ${grade.apellidos}`,
+        grade.matricula,
+        grade.cantidadFaltas,
+        grade.medioTermino,
+        grade.final,
+        this.calculateAcumulada(grade),
+        grade.literal
+      ]);
+
+      doc.autoTable({
+        head: [columns],
+        body: rows,
+        startY: 80,
+        theme: 'grid',
+        headStyles: { fillColor: '#8B5CF6' },
+        styles: { fontSize: 10, cellPadding: 3 },
+        alternateRowStyles: { fillColor: '#f3f3f3' },
+        didDrawPage: (data : any) => {
+          // Footer
+          const pageCount = doc.getNumberOfPages();
+          const pageSize = doc.internal.pageSize;
+          const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+          doc.setFontSize(10);
+          doc.text(`Página ${data.pageNumber} de ${pageCount}`, data.settings.margin.left, pageHeight - 10);
+          doc.text(`Fecha: ${new Date().toLocaleDateString()}`, data.settings.margin.left, pageHeight - 20);
+        }
+      });
+
+      doc.save('calificaciones.pdf');
+    };
   }
 }
