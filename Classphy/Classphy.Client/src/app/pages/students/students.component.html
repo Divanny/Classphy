@@ -243,6 +243,7 @@
           icon="pi pi-check"
           class="p-button-text"
           (click)="saveStudent()"
+          [loading]="loadingStudent"
         ></button>
       </div>
     </div>
@@ -289,6 +290,7 @@
       icon="pi pi-check"
       class="p-button-text"
       (click)="saveSubjects()"
+      [loading]="loadingSubjects"
     ></button>
   </div>
 </p-dialog>

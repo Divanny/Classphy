@@ -15,7 +15,7 @@ namespace Classphy.Server.Repositories
                 idPeriodo = p.idPeriodo,
                 idUsuario = p.idUsuario,
                 Nombre = p.Nombre,
-                FechaRegistro = p.FechaRegistro
+                FechaRegistro = p.FechaRegistro ?? DateTime.Now
             }),
             (DB, filter) =>
             {

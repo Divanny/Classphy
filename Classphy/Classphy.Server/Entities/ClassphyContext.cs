@@ -17,6 +17,8 @@ public partial class ClassphyContext : DbContext
 
     public virtual DbSet<Asistencias> Asistencias { get; set; }
 
+    public virtual DbSet<Calificaciones> Calificaciones { get; set; }
+
     public virtual DbSet<Estudiantes> Estudiantes { get; set; }
 
     public virtual DbSet<EstudiantesAsignatura> EstudiantesAsignatura { get; set; }
@@ -33,6 +35,8 @@ public partial class ClassphyContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Modern_Spanish_CI_AS");
+
         modelBuilder.Entity<Asignaturas>(entity =>
         {
             entity.HasKey(e => e.idAsignatura).HasName("PK_Materias");
@@ -52,6 +56,11 @@ public partial class ClassphyContext : DbContext
             entity.HasKey(e => e.idAsistencia);
 
             entity.Property(e => e.Fecha).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Calificaciones>(entity =>
+        {
+            entity.HasKey(e => e.idCalificacion);
         });
 
         modelBuilder.Entity<Estudiantes>(entity =>

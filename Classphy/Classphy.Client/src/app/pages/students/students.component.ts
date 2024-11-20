@@ -36,6 +36,8 @@ export class StudentsComponent implements OnInit {
   availableSubjects: any[] = [];
   selectedSubjects: any[] = [];
   subjectsDialog: boolean = false;
+  loadingStudent: boolean = false;
+  loadingSubjects: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -67,6 +69,7 @@ export class StudentsComponent implements OnInit {
     this.student = { ...student };
     this.isNewStudent = false;
     this.studentDialog = true;
+    this.errors = {};
   }
 
   hideDialog() {
@@ -75,6 +78,7 @@ export class StudentsComponent implements OnInit {
   }
 
   async saveStudent() {
+    this.loadingStudent = true;
     if (this.isNewStudent) {
       const response = await this.apiService.api.post('/Estudiantes', this.student);
       if (response.data.success) {
@@ -112,6 +116,7 @@ export class StudentsComponent implements OnInit {
         this.errors = response.data.errors || {};
       }
     }
+    this.loadingStudent = false;
   }
 
   confirmDeleteStudent(event: Event, student: any) {
@@ -145,6 +150,7 @@ export class StudentsComponent implements OnInit {
 
   async openSubjectsDialog(student: any) {
     this.student = { ...student };
+    this.errors = {}; // Clear errors
     const response = await this.apiService.api.get('/Estudiantes/GetAsignaturasDisponibles');
     this.availableSubjects = response.data.filter((subject: any) => 
       !student.asignaturas.some((assigned: any) => assigned.idAsignatura === subject.idAsignatura)
@@ -154,6 +160,7 @@ export class StudentsComponent implements OnInit {
   }
 
   async saveSubjects() {
+    this.loadingSubjects = true;
     const response = await this.apiService.api.put(`/Estudiantes/AsociarAsignaturas/${this.student.idEstudiante}`, this.selectedSubjects);
     if (response.data.success) {
       this.messageService.add({
@@ -170,5 +177,6 @@ export class StudentsComponent implements OnInit {
         detail: response.data.message,
       });
     }
+    this.loadingSubjects = false;
   }
 }

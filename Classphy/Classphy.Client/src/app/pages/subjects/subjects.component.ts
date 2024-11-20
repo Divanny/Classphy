@@ -33,11 +33,11 @@ import { PickListModule } from 'primeng/picklist';
 export class SubjectsComponent implements OnInit {
   asignaturas: Asignatura[] = [];
   periodos: Periodo[] = [];
-  selectedPeriodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: '' };
+  selectedPeriodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: new Date() };
   asignaturaDialog: boolean = false;
   periodoDialog: boolean = false;
   asignatura: Asignatura = { idAsignatura: 0, nombre: '', idPeriodo: 0, periodo: '', descripcion: '', cantidadEstudiantesAsociados: 0, estudiantes: [] };
-  periodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: '' };
+  periodo: Periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: new Date() };
   isNewAsignatura: boolean = false;
   isNewPeriodo: boolean = true;
   errors: { [key: string]: string } = {};
@@ -45,6 +45,9 @@ export class SubjectsComponent implements OnInit {
   availableStudents: any[] = [];
   selectedStudents: any[] = [];
   studentsDialog: boolean = false;
+  loadingAsignatura: boolean = false;
+  loadingPeriodo: boolean = false;
+  loadingStudents: boolean = false;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private confirmationService: ConfirmationService) {}
 
@@ -77,7 +80,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   openNewPeriodo() {
-    this.periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: new Date().toISOString() };
+    this.periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: new Date() };
     this.isNewPeriodo = true;
     this.errors = {};
   }
@@ -101,6 +104,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   async saveAsignatura() {
+    this.loadingAsignatura = true;
     if (this.isNewAsignatura) {
       const response = await this.apiService.api.post('/Asignaturas', this.asignatura);
       if (response.data.success) {
@@ -122,9 +126,11 @@ export class SubjectsComponent implements OnInit {
         this.errors = response.data.errors || {};
       }
     }
+    this.loadingAsignatura = false;
   }
 
   async savePeriodo() {
+    this.loadingPeriodo = true;
     if (this.isNewPeriodo) {
       const response = await this.apiService.api.post('/Periodos', this.periodo);
       if (response.data.success) {
@@ -146,10 +152,11 @@ export class SubjectsComponent implements OnInit {
         this.errors = response.data.errors || {};
       }
     }
+    this.loadingPeriodo = false;
   }
 
   cancelEditPeriodo() {
-    this.periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: '' };
+    this.periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: new Date() };
     this.isNewPeriodo = true;
     this.errors = {};
   }
@@ -207,6 +214,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   async saveStudents() {
+    this.loadingStudents = true;
     const response = await this.apiService.api.put(`/Asignaturas/AsociarEstudiantes/${this.asignatura.idAsignatura}`, this.selectedStudents);
     if (response.data.success) {
       this.messageService.add({
@@ -223,5 +231,6 @@ export class SubjectsComponent implements OnInit {
         detail: response.data.message,
       });
     }
+    this.loadingStudents = false;
   }
 }

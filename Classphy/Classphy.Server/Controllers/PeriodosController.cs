@@ -73,6 +73,12 @@ namespace Classphy.Server.Controllers
         {
             try
             {
+                var periodo = _periodosRepo.Get(x => x.Nombre == periodosModel.Nombre).FirstOrDefault();
+                if (periodo != null)
+                {
+                    return new OperationResult(false, "Ya existe un período con este nombre");
+                }
+
                 periodosModel.FechaRegistro = DateTime.Now;
                 periodosModel.idUsuario = _idUsuarioOnline;
 
@@ -102,6 +108,11 @@ namespace Classphy.Server.Controllers
                 var periodo = _periodosRepo.Get(x => x.idUsuario == _idUsuarioOnline && x.idPeriodo == idPeriodo).FirstOrDefault();
 
                 if (periodo == null) return new OperationResult(false, "El período no se ha encontrado");
+
+                if (_periodosRepo.Get(x => x.Nombre == periodosModel.Nombre && x.idPeriodo != idPeriodo).Count() > 0)
+                {
+                    return new OperationResult(false, "Ya existe un período con este nombre");
+                }
 
                 _periodosRepo.Edit(periodosModel);
                 _logger.LogHttpRequest(periodosModel);

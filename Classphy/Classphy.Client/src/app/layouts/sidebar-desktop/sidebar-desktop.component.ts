@@ -66,7 +66,7 @@ export class SidebarDesktopComponent implements OnInit {
       {
         label: 'Calificaciones',
         icon: 'pi pi-search',
-        routerLink: '/Consultas',
+        routerLink: '/grades',
       },
       { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/attendance' },
       { label: 'Usuarios', icon: 'pi pi-user', routerLink: '/users' },

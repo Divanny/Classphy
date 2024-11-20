@@ -7,7 +7,7 @@ import { SidebarItemComponent } from '../sidebar-item/sidebar-item.component';
   selector: 'app-sidebar-mobile',
   templateUrl: './sidebar-mobile.component.html',
   standalone: true,
-  imports: [ImportsModule, SidebarItemComponent],
+  imports: [ImportsModule, SidebarItemComponent]
 })
 export class SideBarMobileComponent implements OnInit {
   sidebarVisible: boolean = false;
@@ -28,7 +28,7 @@ export class SideBarMobileComponent implements OnInit {
       {
         label: 'Calificaciones',
         icon: 'pi pi-search',
-        routerLink: '/Consultas',
+        routerLink: '/grades',
       },
       { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/attendance' },
       { label: 'Usuarios', icon: 'pi pi-user', routerLink: '/users' },
