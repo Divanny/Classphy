@@ -82,6 +82,7 @@ export class SubjectsComponent implements OnInit {
   openNewPeriodo() {
     this.periodo = { idPeriodo: 0, nombre: '', idUsuario: 0, fechaRegistro: new Date() };
     this.isNewPeriodo = true;
+    this.periodoDialog = true;
     this.errors = {};
   }
 
@@ -89,12 +90,14 @@ export class SubjectsComponent implements OnInit {
     this.asignatura = { ...asignatura };
     this.isNewAsignatura = false;
     this.asignaturaDialog = true;
+    this.errors = {};
   }
 
   editPeriodo(periodo: Periodo) {
     this.periodo = { ...periodo };
     this.isNewPeriodo = false;
     this.periodoDialog = true;
+    this.errors = {};
   }
 
   hideDialog() {

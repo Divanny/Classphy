@@ -32,7 +32,13 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              {
+                "glob": "**/*",
+                "input": "node_modules/primeng/resources/themes",
+                "output": "/assets/themes"
+              }
             ],
             "styles": [
               "src/styles.css"
