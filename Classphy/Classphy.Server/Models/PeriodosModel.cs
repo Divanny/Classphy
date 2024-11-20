@@ -13,5 +13,5 @@ public class PeriodosModel
 
     public int idUsuario { get; set; }
 
-    public DateTime FechaRegistro { get; set; }
+    public DateTime? FechaRegistro { get; set; }
 }

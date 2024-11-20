@@ -41,6 +41,7 @@ export class AttendanceComponent implements OnInit {
   errors: { [key: string]: string } = {};
   isDateValid: boolean = true;
   today: Date = new Date();
+  loadingAttendance: boolean = false;
 
   constructor(private apiService: ApiService, private messageService: MessageService) {}
 
@@ -82,13 +83,14 @@ export class AttendanceComponent implements OnInit {
         this.messageService.add({
           severity: 'info',
           summary: 'Sin estudiantes',
-          detail: 'La asignatura no tiene ningún estudiante para la fecha seleccionada.',
+          detail: 'La asignatura no tiene ningún estudiante.',
         });
       }
     }
   }
 
   async saveAttendance() {
+    this.loadingAttendance = true;
     if (this.attendanceRecords.length > 0) {
       const response = await this.apiService.api.post('/Asistencias', this.attendanceRecords);
       if (response.data.success) {
@@ -98,6 +100,7 @@ export class AttendanceComponent implements OnInit {
         this.errors = response.data.errors || {};
       }
     }
+    this.loadingAttendance = false;
   }
 
   openAttendanceDialog() {

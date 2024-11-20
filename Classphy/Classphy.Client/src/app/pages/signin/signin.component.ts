@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class SignInComponent {
   signInForm: FormGroup;
+  loadingSignIn: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -34,6 +35,7 @@ export class SignInComponent {
   async signIn(e: Event) {
     e.preventDefault();
     this.errors = {};
+    this.loadingSignIn = true;
 
     if (this.signInForm.invalid) {
       if (this.signInForm.controls['username'].hasError('required')) {
@@ -42,6 +44,7 @@ export class SignInComponent {
       if (this.signInForm.controls['password'].hasError('required')) {
         this.errors['password'] = 'La contraseña es requerida';
       }
+      this.loadingSignIn = false;
       return;
     }
 
@@ -73,6 +76,8 @@ export class SignInComponent {
         summary: 'Error al iniciar sesión',
         detail: error.message,
       });
+    } finally {
+      this.loadingSignIn = false;
     }
   }
 }

@@ -7,6 +7,7 @@ import { logout } from '../../store/auth/auth.actions';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AuthState } from '../../store/auth/auth.state';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -26,8 +27,11 @@ export class NavbarComponent {
   constructor(
     private messageService: MessageService,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) {
+    this.isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+    this.themeService.toggleTheme(this.isDarkMode);
     this.profileMenuItems = [
       {
         label: 'Cambiar tema',
@@ -47,8 +51,9 @@ export class NavbarComponent {
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('isDarkMode', this.isDarkMode.toString());
+    this.themeService.toggleTheme(this.isDarkMode);
     this.profileMenuItems[0].icon = this.isDarkMode ? 'pi pi-sun' : 'pi pi-moon';
-    document.documentElement.classList.toggle('p-dark', this.isDarkMode);
   }
 
   logout() {

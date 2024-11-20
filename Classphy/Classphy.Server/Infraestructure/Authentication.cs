@@ -67,6 +67,11 @@ namespace Classphy.Server.Infraestructure
                 return new OperationResult(false, "Usuario o contraseña incorrectos");
             }
 
+            if (!usuario.Activo)
+            {
+                return new OperationResult(false, "Este usuario está inactivo");
+            }
+
             string token = TokenGenerator(usuario.NombreUsuario, usuario.idUsuario, usuario.idPerfil);
 
             var data = _usuariosRepo.GetByUsername(usuario.NombreUsuario);

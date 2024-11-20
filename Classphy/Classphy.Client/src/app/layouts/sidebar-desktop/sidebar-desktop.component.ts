@@ -22,6 +22,7 @@ export class SidebarDesktopComponent implements OnInit {
   sidebarItems: MenuItem[] | undefined;
   user: any;
   profileMenuItems: MenuItem[] = [];
+  perfiles!: { [key: string]: number };
 
   constructor(
     private themeService: ThemeService,
@@ -29,21 +30,29 @@ export class SidebarDesktopComponent implements OnInit {
     private store: Store,
     private router: Router
   ) {
-    
+    this.perfiles = {
+      Administrador: 1,
+      Profesor: 2
+    }
+    this.isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+    this.themeService.toggleTheme(this.isDarkMode);
   }
 
   toggleTheme(): void {
+    this.profileMenuItems[0].icon = this.isDarkMode
+      ? 'pi pi-sun'
+      : 'pi pi-moon';
     this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('isDarkMode', this.isDarkMode.toString());
     this.themeService.toggleTheme(this.isDarkMode);
   }
 
   ngOnInit() {
-    this.sidebarItems = this.getStaticSidebarItems();
     this.profileMenuItems = [
       {
         label: 'Cambiar tema',
         icon: this.isDarkMode ? 'pi pi-sun' : 'pi pi-moon',
-        command: () => this.toggleDarkMode(),
+        command: () => this.toggleTheme(),
       },
       {
         label: 'Cerrar sesión',
@@ -54,6 +63,7 @@ export class SidebarDesktopComponent implements OnInit {
     this.store.select((state: any) => state.auth).subscribe((authState: AuthState) => {
       this.user = authState.user;
     });
+    this.sidebarItems = this.getStaticSidebarItems();
   }
 
   getStaticSidebarItems(): MenuItem[] {
@@ -65,25 +75,35 @@ export class SidebarDesktopComponent implements OnInit {
       },
       {
         label: 'Calificaciones',
-        icon: 'pi pi-search',
-        routerLink: '/Consultas',
+        icon: 'pi pi-star',
+        routerLink: '/grades',
+        visible: this.user?.idPerfil === this.perfiles['Profesor'],
       },
-      { label: 'Asistencia', icon: 'pi pi-calendar', routerLink: '/attendance' },
-      { label: 'Usuarios', icon: 'pi pi-user', routerLink: '/users' },
-      { label: 'Asignaturas', icon: 'pi pi-book', routerLink: '/subjects' },
+      { 
+        label: 'Asistencia', 
+        icon: 'pi pi-calendar', 
+        routerLink: '/attendance',
+        visible: this.user?.idPerfil === this.perfiles['Profesor'],
+      },
+      { 
+        label: 'Usuarios', 
+        icon: 'pi pi-user', 
+        routerLink: '/users',
+        visible: this.user?.idPerfil === this.perfiles['Administrador'],
+      },
+      { 
+        label: 'Asignaturas', 
+        icon: 'pi pi-book', 
+        routerLink: '/subjects',
+        visible: this.user?.idPerfil === this.perfiles['Profesor'],
+      },
       {
         label: 'Estudiantes',
         icon: 'pi pi-graduation-cap',
         routerLink: '/students',
+        visible: this.user?.idPerfil === this.perfiles['Profesor'],
       },
     ];
-  }
-  toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    this.profileMenuItems[0].icon = this.isDarkMode
-      ? 'pi pi-sun'
-      : 'pi pi-moon';
-    document.documentElement.classList.toggle('p-dark', this.isDarkMode);
   }
 
   logout() {

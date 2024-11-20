@@ -1,5 +1,5 @@
 <div class="login-container flex-column">
-  <img src="../../assets/classphy.png" alt="Image" height="40" class="my-4" />
+  <img src="../../assets/classphy.png" alt="Image" height="60" class="my-4" />
   <p-card class="login-card w-full md:w-30rem">
     <div class="text-center text-900 text-2xl font-medium mb-3">
       Iniciar sesión
@@ -56,6 +56,7 @@
             type="submit"
             label="Iniciar sesión"
             styleClass="w-full"
+            [loading]="loadingSignIn"
           ></p-button>
         </div>
       </form>

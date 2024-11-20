@@ -86,7 +86,7 @@ builder.Services.AddMvcCore().ConfigureApiBehaviorOptions(options => {
             }
         }
 
-        return new OkObjectResult(new OperationResult(false, "Los datos ingresados no son v·lidos", Errors));
+        return new OkObjectResult(new OperationResult(false, "Los datos ingresados no son v√°lidos", Errors));
     };
 });
 

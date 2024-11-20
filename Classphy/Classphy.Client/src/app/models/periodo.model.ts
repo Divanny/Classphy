@@ -2,5 +2,5 @@ export interface Periodo {
   idPeriodo: number;
   nombre: string;
   idUsuario: number;
-  fechaRegistro: string;
+  fechaRegistro: Date;
 }

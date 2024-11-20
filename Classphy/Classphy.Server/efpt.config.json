@@ -23,6 +23,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Calificaciones]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Estudiantes]",
          "ObjectType": 0
       },
@@ -74,5 +78,6 @@
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,
-   "UseT4": false
+   "UseT4": false,
+   "UseT4Split": false
 }
